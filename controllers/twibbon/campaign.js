@@ -2,10 +2,21 @@ const Campaign = require("../../models/twibbon/campaign")
 const path = require("path")
 
 const getCampaigns = async (req, res, next) => {
+  const page = parseInt(req.query.page) || 0;
+  const limit = parseInt(req.query.limit) || 12;
+  const offset = limit * page;
   try{
-    const [campaigns, _] = await Campaign.findAll()
+    const totalRows = await Campaign.countRows()
+    const totalPage = Math.ceil(totalRows[0][0].namesCount / limit)
+    const [campaigns, _] = await Campaign.findAll(offset, limit)
 
-    res.status(200).send({campaigns})
+    res.status(200).send({
+      campaigns:campaigns,
+      page: page,
+      limit: limit,
+      totalRows: totalRows[0][0].namesCount,
+      totalPage: totalPage
+    })
   }catch(error) {
     console.log(error)
     next(error)
@@ -77,7 +88,7 @@ const updateImageCampaign = async(req, res, next) => {
           res.status(201).send({ message: "Campaign updated"})
         }
       } else {
-        res.status(400).send({message: "Cannot find user"})
+        res.status(400).send({message: "User doesn't exist"})
       }
     } catch(error) {
       console.log(error)

@@ -65,9 +65,15 @@ class Campaign {
     return db.execute(sql)
   }
 
-  static findAll() {
+  static countRows() {
+    const sql = `SELECT COUNT(*) AS namesCount FROM campaigns`
+
+    return db.execute(sql)
+  }
+
+  static findAll(offset, limit) {
     const sql = `
-      SELECT * FROM campaigns LIMIT 32
+      SELECT * FROM campaigns ORDER BY RAND() LIMIT ${limit} OFFSET ${offset}
     `
     return db.execute(sql)
   }
