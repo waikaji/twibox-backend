@@ -20,8 +20,12 @@ const login = async (req, res) => {
         process.env.REFRESH_TOKEN_SECRET,
         {}
       )
+      const result = {
+        id: user[0].id,
+        name: user[0].name,
+      }
       res.json({
-        result: user[0],
+        result,
         accessToken: accessToken,
         refreshToken: refreshToken,
       })
@@ -71,9 +75,12 @@ const register = async (req, res) => {
       process.env.REFRESH_TOKEN_SECRET,
       {}
     )
-
+    const result = {
+      id: getUser[0].id,
+      name: getUser[0].name,
+    }
     res.status(201).json({
-      result: getUser[0],
+      result,
       accessToken: accessToken,
       refreshToken: refreshToken,
     })
