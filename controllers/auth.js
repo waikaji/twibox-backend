@@ -7,10 +7,10 @@ const jwt = require("jsonwebtoken")
 const login = async (req, res) => {
   const [user, _] = await User.findByEmail(req.body.email)
   if(!user.length){
-    return res.status(400).send({message: "Cannot find user"})
+    return res.status(401).send({message: "Your email and password do not match."})
   }
   try{
-    if(await bcrypt.compare(req.body.password, user[0].password)) {
+    if(await bcrypt.compare(req.body.password, user[0].password) && req.body.password.length > 7) {
       const accessToken = generateAccessToken({
         email: user[0].email,
         id: user[0].id
@@ -30,7 +30,7 @@ const login = async (req, res) => {
         refreshToken: refreshToken,
       })
     } else {
-      res.send({message: "Not Allowed"})
+      res.status(401).send({message: "Your email and password do not match."})
     }
   } catch(error) {
     console.log(error.message)
@@ -49,11 +49,15 @@ const register = async (req, res) => {
   const [existingEmail, _] = await User.findByEmail(email)
   
   if(existingEmail.length) {
-    return res.status(400).json({ message: "Email already exists."})
+    return res.status(400).json({ message: {email:"Email already exists."}})
   }
 
   if(password !== confirmPassword) {
-    return res.status(400).json({message: "Passwords don't match"})
+    return res.status(400).json({message: {password:"Passwords don't match"}})
+  }
+
+  if(password.length < 8) {
+    return res.status(400).json({message: {password:"Password must be longer than 7 characters"}})
   }
 
   const salt = await bcrypt.genSalt()
