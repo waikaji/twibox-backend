@@ -77,7 +77,7 @@ const register = async (req, res) => {
     const refreshToken = jwt.sign(
       { email: getUser[0].email, id: getUser[0].id},
       process.env.REFRESH_TOKEN_SECRET,
-      {}
+      { }
     )
     const result = {
       id: getUser[0].id,

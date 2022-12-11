@@ -38,7 +38,7 @@ const regenerateAccessToken = (req, res, next) => {
 }
 
 const generateAccessToken = (userData) => {
-  return jwt.sign(userData, process.env.ACCESS_TOKEN_SECRET, {})
+  return jwt.sign(userData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "25m" })
 }
 
 module.exports = { authenticateToken, regenerateAccessToken }

@@ -45,7 +45,7 @@ app.use(FileUpload())
 app.use(express.static("public"))
 app.use(cors(corsOptions))
 app.use(authenticateToken)
-// app.user(regenerateAccessToken)
+// app.use(regenerateAccessToken)
 
 
 app.use("/api/users", userRouter)
