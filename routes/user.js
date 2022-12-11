@@ -5,7 +5,8 @@ const {
   getUsers,
   getUser,
   updateUser,
-  getUserEmail
+  getUserEmail,
+  updateAvatar
 } = require('../controllers/user')
 
 router
@@ -20,5 +21,9 @@ router
   .route("/:id")
   .get(getUser)
   .patch(updateUser)
+  
+router
+  .route("/avatar/:id")
+  .patch(updateAvatar)
 
 module.exports = router

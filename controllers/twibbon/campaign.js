@@ -82,13 +82,13 @@ const updateImageCampaign = async(req, res, next) => {
 
       if(campaign_by_id.length) {
         if(campaign_by_id[0].id !== parseInt(id, 10)) {
-          res.status(400).send({message: "Failed to update"})
+          res.status(400).send({message: "Failed to update image campaign"})
         }else {
           campaign = await campaign.updateImage(parseInt(id,10))
           res.status(201).send({ message: "Campaign updated"})
         }
       } else {
-        res.status(400).send({message: "User doesn't exist"})
+        res.status(400).send({message: "Campaign doesn't exist"})
       }
     } catch(error) {
       console.log(error)

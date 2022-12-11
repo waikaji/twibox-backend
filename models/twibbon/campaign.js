@@ -23,15 +23,15 @@ class Campaign {
         created_at, 
         updated_at)
         VALUES(
-          '${this.id_user}',
-          '${this.title}',
-          '${this.description}',
-          '${this.image_filename}',
-          '${this.url}',
-          '${createdAtDate}',
-          '${createdAtDate}'
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?
       )`
-    return db.execute(sql)
+    return db.execute(sql, [this.id_user, this.title, this.description, this.image_filename, this.url, createdAtDate, createdAtDate])
   }
 
   update(id) {
@@ -39,14 +39,14 @@ class Campaign {
     const sql = `
       UPDATE campaigns 
       SET
-      title='${this.title}',
-      description='${this.description}',
-      updated_at='${createdAtDate}'
+      title=?,
+      description=?,
+      updated_at=?
       WHERE
-      id=${id}
+      id=?
     `
 
-    return db.execute(sql)
+    return db.execute(sql, [this.title, this.description, createdAtDate, id])
   }
 
   updateImage(id) {
@@ -55,14 +55,14 @@ class Campaign {
     const sql =`
     UPDATE campaigns
     SET
-    image_filename='${image_filename}',
-    url='${url}',
-    updated_at='${createdAtDate}'
+    image_filename=?,
+    url=?,
+    updated_at=?
     WHERE
-    id=${id}
+    id=?
     `
 
-    return db.execute(sql)
+    return db.execute(sql, [image_filename, url, createdAtDate, id])
   }
 
   static countRows() {
@@ -73,17 +73,17 @@ class Campaign {
 
   static findAll(offset, limit) {
     const sql = `
-      SELECT * FROM campaigns ORDER BY RAND() LIMIT ${limit} OFFSET ${offset}
+      SELECT * FROM campaigns ORDER BY RAND() LIMIT ? OFFSET ?
     `
-    return db.execute(sql)
+    return db.execute(sql, [limit, offset])
   }
 
   static findById(id) {
     const sql = `
-      SELECT * FROM campaigns WHERE id=${id}
+      SELECT * FROM campaigns WHERE id=?
     `
 
-    return db.execute(sql)
+    return db.execute(sql, [id])
   }
 
   static findByKeyword(keyword) {
@@ -108,26 +108,26 @@ class Campaign {
 
   static delete(id) {
     const sql = `
-      DELETE FROM campaigns WHERE id=${id}
+      DELETE FROM campaigns WHERE id=?
     `
 
-    return db.execute(sql)
+    return db.execute(sql, [id])
   }
 
   static findByIdUser(id_user) {
     const sql = `
-      SELECT * FROM campaigns WHERE id_user=${id_user}
+      SELECT * FROM campaigns WHERE id_user=?
     `
 
-    return db.execute(sql)
+    return db.execute(sql, [id_user])
   }
 
   static findByIdUser(id_user) {
     const sql = `
-      SELECT * FROM campaigns WHERE id_user=${id_user}
+      SELECT * FROM campaigns WHERE id_user=?
     `
 
-    return db.execute(sql)
+    return db.execute(sql, [id_user])
   }
 
   static countCampaignByIdUser(id_user) {
