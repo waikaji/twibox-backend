@@ -161,7 +161,13 @@ const getMyCampaign = async(req, res, next) => {
     const id_user = req.params.id_user
     const [campaigns, _] = await Campaign.findByIdUser(id_user)
 
-    res.status(200).send({campaigns})
+    const getCount = await Campaign.countCampaignByIdUser(id_user)
+    const count = getCount[0][0].count
+
+    const getTotal = await Campaign.totalDownloaderByIdUser(id_user)
+    const total = getTotal[0][0].total
+
+    res.status(200).send({count: count, total:parseInt(total), campaigns})
   }catch(error) {
     console.log(error)
     next(error)

@@ -98,12 +98,12 @@ class Campaign {
     const sql = `
       UPDATE campaigns
       SET
-      downloader=${count}
+      downloader=?
       WHERE
-      id=${id}
+      id=?
     `
 
-    return db.execute(sql)
+    return db.execute(sql, [count, id])
   }
 
   static delete(id) {
@@ -120,6 +120,30 @@ class Campaign {
     `
 
     return db.execute(sql)
+  }
+
+  static findByIdUser(id_user) {
+    const sql = `
+      SELECT * FROM campaigns WHERE id_user=${id_user}
+    `
+
+    return db.execute(sql)
+  }
+
+  static countCampaignByIdUser(id_user) {
+    const sql = `
+      SELECT COUNT(*) AS count FROM campaigns WHERE id_user=?
+    `
+
+    return db.execute(sql, [id_user])
+  }
+
+  static totalDownloaderByIdUser(id_user) {
+    const sql = `
+      SELECT SUM(downloader) AS total FROM campaigns WHERE id_user=?
+    `
+
+    return db.execute(sql, [id_user])
   }
 }
 
