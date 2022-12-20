@@ -12,13 +12,11 @@ const corsOptions = {
   optionSuccessStatus: 200,
 };
 
-const {
-  authenticateToken,
-  regenerateAccessToken,
-} = require("./middleware/auth")
+
 
 const campaignRouter = require("./routes/twibbon/campaign")
 const userRouter = require("./routes/user")
+const authRouter = require("./routes/auth")
 
 app.use(function (req, res, next) {
 
@@ -44,11 +42,12 @@ app.use(express.urlencoded({ extended: false }))
 app.use(FileUpload())
 app.use(express.static("public"))
 app.use(cors(corsOptions))
-app.use(authenticateToken)
+// app.use(authenticateToken)
 // app.use(regenerateAccessToken)
 
 
 app.use("/api/users", userRouter)
+app.use("/api/auth", authRouter)
 app.use("/api/campaigns", campaignRouter)
 
 app.listen(process.env.PORT, function() {

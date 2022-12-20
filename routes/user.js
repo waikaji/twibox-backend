@@ -1,5 +1,5 @@
 const express = require('express')
-const router = express.Router()
+const router = express()
 
 const {
   getUsers,
@@ -9,21 +9,18 @@ const {
   updateAvatar
 } = require('../controllers/user')
 
-router
-  .route("/")
-  .get(getUsers)
+const {
+  authenticateToken,
+  regenerateAccessToken,
+} = require("../middleware/auth")
 
-router
-  .route("/email")
-  .get(getUserEmail)
+router.get("/", authenticateToken, getUsers)
 
-router
-  .route("/:id")
-  .get(getUser)
-  .patch(updateUser)
+router.get("/email", authenticateToken, getUserEmail)
+
+router.get("/:id", authenticateToken, getUser)
+router.patch("/:id", authenticateToken, updateUser)
   
-router
-  .route("/avatar/:id")
-  .patch(updateAvatar)
+router.patch("/avatar/:id", authenticateToken, updateAvatar)
 
 module.exports = router

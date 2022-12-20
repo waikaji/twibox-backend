@@ -1,5 +1,5 @@
 const express = require('express')
-const router = express.Router()
+const router = express()
 
 const {
   createCampaign,
@@ -13,31 +13,24 @@ const {
   deleteCampaign,
 } = require('../../controllers/twibbon/campaign')
 
-router
-  .route("/")
-  .get(getCampaigns)
-  .post(createCampaign)
+const {
+  authenticateToken,
+  regenerateAccessToken,
+} = require("../../middleware/auth")
 
-router
-  .route("/search")
-  .get(searchCampaign)
+router.get("/", getCampaigns)
+router.post("/", authenticateToken, createCampaign)
 
-router
-  .route("/downloader/:id")
-  .patch(addDownloader)
+router.get("/search", searchCampaign)
 
-router
-  .route("/mycampaign/:id_user")
-  .get(getMyCampaign)
+router.patch("/downloader/:id", addDownloader)
 
-router
-  .route("/:id")
-  .get(getCampaign)
-  .patch(updateCampaign)
-  .delete(deleteCampaign)
+router.get("/mycampaign/:id_user", authenticateToken, getMyCampaign)
 
-router
-  .route("/image/:id")
-  .patch(updateImageCampaign)
+router.get("/:id", getCampaign)
+router.patch("/:id", authenticateToken, updateCampaign)
+router.delete("/:id", authenticateToken, deleteCampaign)
+
+router.patch("/image/:id", authenticateToken, updateImageCampaign)
 
 module.exports = router
