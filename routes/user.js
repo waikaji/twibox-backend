@@ -18,7 +18,7 @@ router.get("/", authenticateToken, getUsers)
 
 router.get("/email", authenticateToken, getUserEmail)
 
-router.get("/:id", authenticateToken, getUser)
+router.get("/:id", getUser)
 router.patch("/:id", authenticateToken, updateUser)
   
 router.patch("/avatar/:id", authenticateToken, updateAvatar)
