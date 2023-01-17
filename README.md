@@ -8,9 +8,6 @@ In the project directory, you can run:
 
 ### `npm run dev`
 
-Run Socket :
-### `npm run socket`
-
 ## Env Configuration
 
 ```
